@@ -46,7 +46,13 @@ app.fetch = function () {
   //     console.error('chatterbox: Failed to GET');
   //   }
   // });
-  return $.get('https://api.parse.com/1/classes/chatterbox');
+
+  
+  $.get('https://api.parse.com/1/classes/chatterbox', function(data) {
+    for (var i = 0; i < data.results.length; i++) {
+      app.addMessage(data.results[i]);
+    }
+  });
 };
 
 //clearMessages should remove messages from the DOM
@@ -56,7 +62,7 @@ app.clearMessages = function () {
 
 //addMessage should add message to the DOM chats is the id of a div in the specrunner.html
 app.addMessage = function (message) {
-  $('#chats').prepend("<tr><td class= 'username'>" + message.username + "</td><td class= 'text'>" + message.text + "</td></tr>");
+  $('#chats').prepend("<tr><td class= 'username'>" + JSON.stringify(message.username) + "</td><td class= 'text'>" + JSON.stringify(message.text) + "</td></tr>");
 };
 
 //addRoom adds a room to the DOM roomSelect is the id of a selector in the specrunner.html
