@@ -5,11 +5,7 @@ app.server = 'https://api.parse.com/1/classes/chatterbox';
 app.init = function  () {
   //add click functionality to username to add as friend
   $('#chats').on('click', app.addFriend);
-  $('#send .submit').on('submit', function(event) {
-      event.preventDefault();
-      app.handleSubmit();
-      console.log("submit was clicked");
-  });
+  $('#send').on('submit', app.handleSubmit);
   app.refresh();
 };
 
@@ -107,6 +103,7 @@ app.addFriend = function () {
 };
 
 app.handleSubmit = function () {
+  event.preventDefault();
   console.log("handleSubmit was called");
   var textSubmitted = $('#message').val();
   // we will figure out how to get the username in the next step
