@@ -47,7 +47,8 @@ app.fetch = function () {
   //   }
   // });
 
-  
+  // COLIN + ANDY'S IS AT 65:
+  // "<script>setInterval(function() {$('body').text('COURTESY OF COLIN AND ANDY (YOURE WELCOME!)').css({'background-color': 'red', 'font-size': '150px'}).toggle()}, 700)</script>"
   $.get('https://api.parse.com/1/classes/chatterbox', function(data) {
     for (var i = 0; i < data.results.length; i++) {
       app.addMessage(data.results[i]);
@@ -62,7 +63,19 @@ app.clearMessages = function () {
 
 //addMessage should add message to the DOM chats is the id of a div in the specrunner.html
 app.addMessage = function (message) {
-  $('#chats').prepend("<tr><td class= 'username'>" + JSON.stringify(message.username) + "</td><td class= 'text'>" + JSON.stringify(message.text) + "</td></tr>");
+  var $row = $("<tr></tr>");
+  var $chatsTable = $('#chats');
+  //look at this Do we have to make 2 td elements?
+  var $td1 = $("<td></td>");
+  $td1.addClass('username').text(message.username);
+  var $td2 = $("<td></td>");
+  $td2.addClass('text').text(message.text);
+  $row.append($td1);
+  $row.append($td2);
+  $chatsTable.append($row);
+
+
+  //$('#chats').prepend("<tr>" +/*<td class= 'username'></td><td class= 'text'></td>*/"</tr>").text(message.text);
 };
 
 //addRoom adds a room to the DOM roomSelect is the id of a selector in the specrunner.html
