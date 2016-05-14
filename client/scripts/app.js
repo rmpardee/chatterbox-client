@@ -5,7 +5,12 @@ app.server = 'https://api.parse.com/1/classes/chatterbox';
 app.init = function  () {
   //add click functionality to username to add as friend
   $('#chats').on('click', app.addFriend);
-  $('#send .submit').on('submit', app.handleSubmit);
+  $('#send .submit').on('submit', function(event) {
+      event.preventDefault();
+      app.handleSubmit();
+      console.log("submit was clicked");
+  });
+  app.refresh();
 };
 
 //send uses POST to send a message in a string
@@ -32,11 +37,15 @@ app.send = function  (message) {
   });
 };
 
+
 //fetch sends a GET request
 app.fetch = function () {
-  // $.ajax({
+  // VERSION WITH .AJAX
+  // return $.ajax({
   //   url: 'https://api.parse.com/1/classes/chatterbox',
   //   type: 'GET',
+  //   data: 'order=-createdAt',
+  //   // data: 'where={"createdAt":{"$gt":"2016-01-26T03:50:00.428Z"}}',
   //   // contentType: 'application/json',
   //   success: function(data) {
   //     console.log('chatterbox: GET received');
@@ -47,10 +56,9 @@ app.fetch = function () {
   //   }
   // });
 
-  // COLIN + ANDY'S IS AT 65:
-  // "<script>setInterval(function() {$('body').text('COURTESY OF COLIN AND ANDY (YOURE WELCOME!)').css({'background-color': 'red', 'font-size': '150px'}).toggle()}, 700)</script>"
-  //look into the order the messsages were created.  filter by date
-  $.get('https://api.parse.com/1/classes/chatterbox', function(data) {
+  // VERSION USING JQUERY'S .GET
+  $.get('https://api.parse.com/1/classes/chatterbox', 'order=-createdAt', function(data) {
+    app.clearMessages();
     for (var i = 0; i < data.results.length; i++) {
       app.addMessage(data.results[i]);
     }
@@ -79,6 +87,14 @@ app.addMessage = function (message) {
   //$('#chats').prepend("<tr>" +/*<td class= 'username'></td><td class= 'text'></td>*/"</tr>").text(message.text);
 };
 
+app.createMessage = function (username, text, roomname) {
+  return {
+    'username': username,
+    'text': text,
+    'roomname': roomname
+  };
+};
+
 //addRoom adds a room to the DOM roomSelect is the id of a selector in the specrunner.html
 app.addRoom = function (roomName) {
   $('#roomSelect').append("<option>" + roomName + "</option>");
@@ -91,12 +107,25 @@ app.addFriend = function () {
 };
 
 app.handleSubmit = function () {
-  // will handle the submit
   console.log("handleSubmit was called");
-}
+  var textSubmitted = $('#message').val();
+  // we will figure out how to get the username in the next step
+  var newMessage = app.createMessage('RuthandMario', textSubmitted, '4chan');
+  app.send(newMessage);
+};
+
+app.refresh = function() {
+  console.log("refresh was called");
+  app.fetch();
+  setTimeout(app.refresh, 5000);
+};
+
+$(document).ready(app.init);
+
+
 
 var message = {
   username: 'RuthandMario',
-  text: 'first post ever',
+  text: 'setInterval(function() { alert(message); }, 500)',
   roomname: '4chan'
 };
