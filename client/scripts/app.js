@@ -49,6 +49,7 @@ app.fetch = function () {
 
   // COLIN + ANDY'S IS AT 65:
   // "<script>setInterval(function() {$('body').text('COURTESY OF COLIN AND ANDY (YOURE WELCOME!)').css({'background-color': 'red', 'font-size': '150px'}).toggle()}, 700)</script>"
+  //look into the order the messsages were created.  filter by date
   $.get('https://api.parse.com/1/classes/chatterbox', function(data) {
     for (var i = 0; i < data.results.length; i++) {
       app.addMessage(data.results[i]);
