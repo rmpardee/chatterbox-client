@@ -106,6 +106,7 @@ app.handleSubmit = function () {
   event.preventDefault();
   console.log("handleSubmit was called");
   var textSubmitted = $('#message').val();
+  $('#message').val('');
   // we will figure out how to get the username in the next step
   var newMessage = app.createMessage('RuthandMario', textSubmitted, '4chan');
   app.send(newMessage);
